@@ -1,8 +1,7 @@
 "use client";
-import About from "@/app/(pages)/about/page";
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -12,13 +11,22 @@ export default function Home() {
       setProds(res.data);
     });
   }, []);
+  const pathname = usePathname();
   return (
     <>
       <Link href={"about"}>about</Link>
       <Link href={"contact"}>contact</Link>
       {Prods?.map((prod) => {
+        const isActive = pathname.startsWith("/");
         return (
-          <li key={prod.id}>
+          <li
+            key={prod.id}
+            style={
+              isActive
+                ? { backgroundColor: "red" }
+                : { backgroundColor: "yellow" }
+            }
+          >
             <Link href={`/products/${prod.id}`}>{prod.name}</Link>
           </li>
         );
